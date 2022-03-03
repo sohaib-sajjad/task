@@ -7,7 +7,7 @@ const auth = require('./../middlewares/auth');
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, 'posts/');
+        callback(null, 'post_images/');
     },
     filename: function (req, file, callback) {
         callback(null, file.originalname);
@@ -31,7 +31,7 @@ app.post("/create-post", auth, upload.single('image'), async (req, res, next) =>
 
     // console.log(req.file)
 
-    const img = path.join(__dirname, `./../posts/${req.file.originalname}`)
+    const img = path.join(__dirname, `./../post_images/${req.file.originalname}`)
 
 
     const post = new post_model({
