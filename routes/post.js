@@ -128,9 +128,23 @@ module.exports = (app) => {
     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-    app.get("/update-post/:id", auth, async (req, res, next) => {
+    app.get("/update-post/:id", auth, upload.single('image'), async (req, res, next) => {
 
-        await post_model.findOneAndUpdate({ _id: req.params.id })
+        const img = path.join(__dirname, `./../post_images/${req.file.originalname}`)
+
+
+        const new_values = {
+
+            $set: {
+                created_by: req.body.created_by,
+                description: req.body.description,
+                title: req.body.title,
+            }
+        };
+
+        if (img) new_values.$set.image = img
+
+        await post_model.findOneAndUpdate({ _id: req.params.id }, new_values)
 
             .catch((err) => {
 
