@@ -116,11 +116,9 @@ module.exports = (app) => {
 
                     { email: user.email },
 
-                    process.env.SECRET_KEY, {
+                    process.env.SECRET_KEY
 
-                    expires_in: "24h"
-
-                });
+                );
 
 
                 res.header('x-auth-header', token).json({
